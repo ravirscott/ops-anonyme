@@ -1,6 +1,6 @@
 # 🔐 OPS-ANONYME — Anonymous Chat System
 
-> No identity. No traces. No mercy
+> No identity. No traces No mercy
 
 [![Live Demo](https://img.shields.io/badge/Live-ops--anonyme--production.up.railway.app-00ff90?style=for-the-badge)](https://ops-anonyme-production.up.railway.app)
 [![GitHub](https://img.shields.io/badge/GitHub-ravirscott%2Fops--anonyme-181717?style=for-the-badge&logo=github)](https://github.com/ravirscott/ops-anonyme)

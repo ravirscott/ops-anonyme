@@ -20,8 +20,7 @@ const path = require("path");
 // ─── CONFIG ────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
 // Bind to localhost ONLY — Tor will proxy to this
-const HOST = "127.0.0.1";
-
+const HOST = "0.0.0.0";
 // ─── APP SETUP ─────────────────────────────────────────────────────────────
 const app = express();
 const server = http.createServer(app);

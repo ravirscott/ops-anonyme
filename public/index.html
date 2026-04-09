@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANONCHAT // Secure Anonymous Rooms</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <!-- No external resources. 100% self-contained. -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     SCREEN 1: LANDING / HOME
+═══════════════════════════════════════ -->
+<div id="screen-home" class="screen active">
+  <div class="scanline"></div>
+  <div class="noise"></div>
+
+  <header class="logo-header">
+    <div class="logo-glyph">⬡</div>
+    <h1 class="logo-text">ANON<span class="accent">CHAT</span></h1>
+    <p class="logo-sub">// no identity. no trace. no mercy.</p>
+  </header>
+
+  <main class="home-main">
+    <div class="card" id="card-create">
+      <div class="card-icon">+</div>
+      <h2>CREATE ROOM</h2>
+      <p>Spin up a new encrypted room</p>
+      <div class="form-group">
+        <label for="create-name">ROOM NAME</label>
+        <input type="text" id="create-name" placeholder="e.g. darknet-ops" maxlength="50" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="form-group">
+        <label for="create-key">SECRET KEY</label>
+        <div class="input-with-toggle">
+          <input type="password" id="create-key" placeholder="min 4 characters" maxlength="128" autocomplete="off" />
+          <button class="eye-btn" onclick="togglePassword('create-key', this)">👁</button>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="createRoom()">
+        <span class="btn-text">INITIALIZE ROOM</span>
+        <span class="btn-loader hidden">...</span>
+      </button>
+      <div class="form-msg" id="create-msg"></div>
+    </div>
+
+    <div class="divider">
+      <span>OR</span>
+    </div>
+
+    <div class="card" id="card-join">
+      <div class="card-icon">→</div>
+      <h2>JOIN ROOM</h2>
+      <p>Enter with room name + key</p>
+      <div class="form-group">
+        <label for="join-name">ROOM NAME</label>
+        <input type="text" id="join-name" placeholder="e.g. darknet-ops" maxlength="50" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="form-group">
+        <label for="join-key">SECRET KEY</label>
+        <div class="input-with-toggle">
+          <input type="password" id="join-key" placeholder="the key used to create" maxlength="128" autocomplete="off" />
+          <button class="eye-btn" onclick="togglePassword('join-key', this)">👁</button>
+        </div>
+      </div>
+      <button class="btn btn-secondary" onclick="joinRoom()">
+        <span class="btn-text">ACCESS ROOM</span>
+        <span class="btn-loader hidden">...</span>
+      </button>
+      <div class="form-msg" id="join-msg"></div>
+    </div>
+  </main>
+
+  <footer class="home-footer">
+    <span class="status-dot" id="conn-dot"></span>
+    <span id="conn-status">connecting to relay...</span>
+    &nbsp;|&nbsp;
+    <span id="rooms-active">rooms: unknown</span>
+  </footer>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     SCREEN 2: CHAT ROOM
+═══════════════════════════════════════ -->
+<div id="screen-chat" class="screen">
+
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <button class="back-btn" onclick="leaveRoom()" title="Leave room">←</button>
+      <div class="chat-room-info">
+        <span class="chat-room-name" id="chat-room-name">#room</span>
+        <span class="chat-member-count" id="chat-member-count">0 online</span>
+      </div>
+    </div>
+    <div class="chat-header-right">
+      <span class="my-username" id="my-username">anon</span>
+      <button class="icon-btn" onclick="copyInvite()" title="Copy invite info">🔗</button>
+      <button class="icon-btn" id="sound-btn" onclick="toggleSound()" title="Sound notifications">🔔</button>
+    </div>
+  </div>
+
+  <div class="chat-body" id="chat-body">
+    <div class="chat-welcome" id="chat-welcome">
+      <div class="welcome-glyph">⬡</div>
+      <p>You are in <strong id="welcome-room"></strong></p>
+      <p class="welcome-sub">Messages are in-memory only. They vanish when the room empties.</p>
+    </div>
+    <!-- Messages injected here -->
+  </div>
+
+  <div class="chat-input-area">
+    <div class="chat-input-row">
+      <textarea
+        id="msg-input"
+        placeholder="Type a message... (Enter to send)"
+        maxlength="2000"
+        rows="1"
+        onkeydown="handleMsgKey(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+      <button class="send-btn" onclick="sendMessage()" title="Send">▶</button>
+    </div>
+    <div class="char-count" id="char-count">0 / 2000</div>
+  </div>
+
+</div>
+
+<!-- Audio element for notification ping -->
+<audio id="notify-sound" preload="auto">
+  <!-- Base64 encoded minimal beep (generated inline) -->
+</audio>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
